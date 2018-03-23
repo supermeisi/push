@@ -71,9 +71,11 @@ def main():
 		randvx = -2+random.random()*4
 		randvy = -2+random.random()*4
 
+		randrad = 30*random.random()+1
+
 		print randvx, randvy
 
-		particle = Particle(screen, (randx, randy), 15, int(randvx), int(randvy))
+		particle = Particle(screen, (randx, randy), int(randrad), int(randvx), int(randvy))
 
 		#Adding particles to particle list
 		particles.append(particle)
