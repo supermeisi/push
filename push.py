@@ -4,6 +4,22 @@ import math
 width = 800
 height = 600
 
+class Particle:
+	def __init__(self, screen, (x,y), radius):
+		self.x = x
+		self.y = y
+		self.radius = radius
+		self.colour = (255,255,255)
+		self.thickness = 1
+		self.screen = screen
+
+	def display(self):
+		pygame.draw.circle(self.screen, self.colour, (int(self.x), int(self.y)), self.radius, self.thickness)
+
+	def move(self, vx, vy):
+		self.x += vx;
+		self.y += vy;
+
 def main():
 	pygame.init()
 	screen = pygame.display.set_mode((width, height))
@@ -18,6 +34,12 @@ def main():
 	vy = 0
 
 	radius = 10
+
+	particles = []
+
+	particle = Particle(screen, (50, 50), 15)
+
+	particles.append(particle)
 
 	while running:
 		clock.tick(30)
@@ -39,13 +61,15 @@ def main():
 		x += vx
 		y += vy
 
-		#print x, y
-
 		if(x < 0 or x > 800):
 			vx = -vx
 
 		if(y < 0 or y > 600):
 			vy = -vy
+
+		for i in range(len(particles)):
+			particles[i].display()
+			particles[i].move(1, 1)
 
 		pygame.draw.circle(screen, (255, 0, 0), (int(x), int(y)) ,int(radius), 1)
 
