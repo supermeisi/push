@@ -1,5 +1,6 @@
 import pygame
 import math
+import random
 
 width = 800
 height = 600
@@ -9,7 +10,7 @@ class Particle:
 		self.x = x
 		self.y = y
 		self.radius = radius
-		self.colour = (255,255,255)
+		self.colour = (255,0,0)
 		self.thickness = 1
 		self.screen = screen
 		self.vx = vx
@@ -19,17 +20,18 @@ class Particle:
 		pygame.draw.circle(self.screen, self.colour, (int(self.x), int(self.y)), self.radius, self.thickness)
 
 	def move(self, vx, vy):
-		self.vx = vx
-		self.vy = vy
-
-		self.x += self.vx
-		self.y += self.vy
+		self.vx += vx
+		self.vy += vy
 
 		if(self.x < 0 or self.x > 800):
 			self.vx = -self.vx
 
 		if(self.y < 0 or self.y > 600):
 			self.vy = -self.vy
+
+		self.x += self.vx
+		self.y += self.vy
+
 
 def main():
 	pygame.init()
@@ -48,10 +50,22 @@ def main():
 
 	particles = []
 
-	particle = Particle(screen, (50, 50), 15, 0, 0)
+	#Creating initial particles randomly
+	for i in range(100):
+		randx = random.random()*800
+		randy = random.random()*640
 
-	particles.append(particle)
+		randvx = -2+random.random()*4
+		randvy = -2+random.random()*4
 
+		print randvx, randvy
+
+		particle = Particle(screen, (randx, randy), 15, int(randvx), int(randvy))
+
+		#Adding particles to particle list
+		particles.append(particle)
+
+	#Starting main loop
 	while running:
 		clock.tick(30)
 		screen.fill((0, 0, 0))
@@ -80,9 +94,9 @@ def main():
 
 		for i in range(len(particles)):
 			particles[i].display()
-			particles[i].move(2, 1.5)
+			particles[i].move(0, 0)
 
-		pygame.draw.circle(screen, (255, 0, 0), (int(x), int(y)) ,int(radius), 1)
+		pygame.draw.circle(screen, (255, 255, 255), (int(x), int(y)) ,int(radius), 1)
 
 		pygame.display.flip()
 
