@@ -32,6 +32,19 @@ class Particle:
 		self.x += self.vx
 		self.y += self.vy
 
+	def collision(self, particle):
+
+		dist = math.sqrt((particle.x - self.x)**2 + (particle.y - self.y)**2)
+
+		if(particle.radius > particle.thickness and self.radius > self.thickness):
+			if(dist < particle.radius + self.radius):
+				if(particle.radius > self.radius):
+					particle.radius += 1
+					self.radius -= 1
+				else:
+					particle.radius -= 1
+					self.radius += 1
+
 
 def main():
 	pygame.init()
@@ -95,6 +108,9 @@ def main():
 		for i in range(len(particles)):
 			particles[i].display()
 			particles[i].move(0, 0)
+
+			for j in range(len(particles)):
+				particles[i].collision(particles[j])
 
 		pygame.draw.circle(screen, (255, 255, 255), (int(x), int(y)) ,int(radius), 1)
 
