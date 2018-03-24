@@ -61,9 +61,9 @@ class Particle:
 
 	def comparison(self, particle):
 		if(self.radius > particle.radius):
-			self.color = (255, 0, 0)
+			self.colour = (255, 0, 0)
 		if(self.radius < particle.radius):
-			self.color = (0, 255, 0)
+			self.colour = (0, 255, 0)
 
 def main():
 	width = 800
@@ -113,10 +113,10 @@ def main():
 			particles[i].display()
 			particles[i].move(0, 0)
 
-			for j in range(len(particles)):
-				particles[i].comparison(particles[j])
+			particles[i].comparison(player)
 
-		#pygame.draw.circle(screen, (255, 255, 255), (int(x), int(y)) ,int(radius), 1)
+			#for j in range(len(particles)):
+				#particles[i].collison(particles[j])
 
 		player.player = True
 		player.display()
