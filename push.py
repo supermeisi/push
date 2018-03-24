@@ -18,7 +18,8 @@ class Particle:
 		if(self.player == True):
 			self.colour = (255,255,255)
 
-		pygame.draw.circle(self.screen, self.colour, (int(self.x), int(self.y)), int(self.radius), self.thickness)
+		if(self.radius > self.thickness):
+			pygame.draw.circle(self.screen, self.colour, (int(self.x), int(self.y)), int(self.radius), self.thickness)
 
 	def move(self, vx, vy):
 		if(self.player == True):
@@ -50,14 +51,15 @@ class Particle:
 	def collision(self, particle):
 		dist = math.sqrt((particle.x - self.x)**2 + (particle.y - self.y)**2)
 
-		if(particle.radius > particle.thickness and self.radius > self.thickness):
-			if(dist < particle.radius + self.radius):
-				if(particle.radius > self.radius):
-					particle.radius += 1
-					self.radius -= 1
-				else:
-					particle.radius -= 1
-					self.radius += 1
+		if(dist < (particle.radius + self.radius)):
+			self.vx = particle.vx
+			self.vy = particle.vy
+			if(particle.radius > self.radius):
+				particle.radius += 0.1
+				self.radius -= 0.1
+			else:
+				particle.radius -= 0.1
+				self.radius += 0.1
 
 	def comparison(self, particle):
 		if(self.radius > particle.radius):
@@ -81,14 +83,20 @@ def main():
 	vx = 0
 	vy = 0
 
-	radius = 10
+	radius = 20
 
 	particles = []
 
 	player = Particle(screen, (int(x), int(y)), int(radius), 0, 0)
 
+	player.player = True
+
+	particles.append(player)
+
+	lost = False
+
 	#Creating initial particles randomly
-	for i in range(100):
+	for i in range(20):
 		randx = random.random()*800
 		randy = random.random()*640
 
@@ -104,10 +112,16 @@ def main():
 		#Adding particles to particle list
 		particles.append(particle)
 
+	#Define text output
+	pygame.font.init()
+	myfont = pygame.font.SysFont('Comic Sans MS', 30)
+
 	#Starting main loop
 	while running:
 		clock.tick(30)
 		screen.fill((0, 0, 0))
+
+		index = []
 
 		for i in range(len(particles)):
 			particles[i].display()
@@ -115,12 +129,24 @@ def main():
 
 			particles[i].comparison(player)
 
-			#for j in range(len(particles)):
-				#particles[i].collison(particles[j])
+			for j in range(len(particles)):
+				particles[i].collision(particles[j])
 
-		player.player = True
+			if(particles[i].radius < particles[i].thickness):
+				index.append(i)
+				if(particles[i].player == True):
+					lost = True
+					print "You lost the game"
+
+		for i in range(len(index)):
+			particles.pop(index[i])
+
 		player.display()
 		player.move(0, 0)
+
+		if(lost == True):
+			textsurface = myfont.render("You lost the game", False, (255, 55, 0))
+			screen.blit(textsurface,(width/2,height/2))
 
 		pygame.display.flip()
 
