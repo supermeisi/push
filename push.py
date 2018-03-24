@@ -34,14 +34,14 @@ def main():
 	lost = False
 
 	#Creating initial particles randomly
-	for i in range(20):
+	for i in range(25):
 		randx = random.random()*800
 		randy = random.random()*640
 
 		randvx = -2+random.random()*4
 		randvy = -2+random.random()*4
 
-		randrad = 30*random.random()+1
+		randrad = 25*random.random()+1
 
 		print randvx, randvy
 
@@ -59,7 +59,7 @@ def main():
 
 	pygame.display.flip()
 
-	time.sleep(3)
+	time.sleep(2)
 
 	#Starting main loop
 	while running:

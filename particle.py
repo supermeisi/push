@@ -37,14 +37,17 @@ class Particle:
 		dist = math.sqrt((particle.x - self.x)**2 + (particle.y - self.y)**2)
 
 		if(dist < (particle.radius + self.radius)):
+			#Calculate the center-of-mass speed of both particles
+			self.vx = (self.radius*self.vx + particle.radius*particle.vx)/(self.radius + particle.radius)
+			particle.vx = self.vx
+			self.vy = (self.radius*self.vy + particle.radius*particle.vy)/(self.radius + particle.radius)
+			particle.vy = self.vy
+
+			#Check which particle is bigger
 			if(particle.radius > self.radius):
-				self.vx = particle.vx
-				self.vy = particle.vy
 				particle.radius += 0.1
 				self.radius -= 0.1
 			else:
-				particle.vx = self.vx
-				particle.vy = self.vy
 				particle.radius -= 0.1
 				self.radius += 0.1
 
