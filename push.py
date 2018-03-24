@@ -2,9 +2,6 @@ import pygame
 import math
 import random
 
-width = 800
-height = 600
-
 class Particle:
 	def __init__(self, screen, (x,y), radius, vx, vy):
 		self.x = x
@@ -15,11 +12,29 @@ class Particle:
 		self.screen = screen
 		self.vx = vx
 		self.vy = vy
+		self.player = False
 
 	def display(self):
-		pygame.draw.circle(self.screen, self.colour, (int(self.x), int(self.y)), self.radius, self.thickness)
+		if(self.player == True):
+			self.colour = (255,255,255)
+
+		pygame.draw.circle(self.screen, self.colour, (int(self.x), int(self.y)), int(self.radius), self.thickness)
 
 	def move(self, vx, vy):
+		if(self.player == True):
+			for event in pygame.event.get():
+				if(event.type == pygame.MOUSEBUTTONUP):
+					pos = pygame.mouse.get_pos()
+					dist = math.sqrt((pos[0] - self.x)**2 + (pos[1] - self.y)**2)
+
+					print pos[0] - self.x, pos[1] - self.y
+
+					self.vx -= (0.25*(pos[0]-self.x)/dist)
+					self.vy -= (0.25*(pos[1]-self.y)/dist)
+
+					if self.radius > 0.1:
+						self.radius -= 0.1
+
 		self.vx += vx
 		self.vy += vy
 
@@ -33,7 +48,6 @@ class Particle:
 		self.y += self.vy
 
 	def collision(self, particle):
-
 		dist = math.sqrt((particle.x - self.x)**2 + (particle.y - self.y)**2)
 
 		if(particle.radius > particle.thickness and self.radius > self.thickness):
@@ -45,8 +59,10 @@ class Particle:
 					particle.radius -= 1
 					self.radius += 1
 
-
 def main():
+	width = 800
+	height = 600
+
 	pygame.init()
 	screen = pygame.display.set_mode((width, height))
 	running = True
@@ -62,6 +78,8 @@ def main():
 	radius = 10
 
 	particles = []
+
+	player = Particle(screen, (int(x), int(y)), int(radius), 0, 0)
 
 	#Creating initial particles randomly
 	for i in range(100):
@@ -85,36 +103,18 @@ def main():
 		clock.tick(30)
 		screen.fill((0, 0, 0))
 
-		for event in pygame.event.get():
-			if(event.type == pygame.MOUSEBUTTONUP):
-				pos = pygame.mouse.get_pos()
-				dist = math.sqrt((pos[0] - x)**2 + (pos[1] - y)**2)
-
-				print pos[0]/dist, pos[1]/dist
-
-				vx -= (0.25*(pos[0]-x)/dist)
-				vy -= (0.25*(pos[1]-y)/dist)
-
-				if radius > 0.1:
-					radius -= 0.1
-
-		x += vx
-		y += vy
-
-		if(x < 0 or x > 800):
-			vx = -vx
-
-		if(y < 0 or y > 600):
-			vy = -vy
-
 		for i in range(len(particles)):
 			particles[i].display()
 			particles[i].move(0, 0)
 
-			for j in range(len(particles)):
-				particles[i].collision(particles[j])
+			#for j in range(len(particles)):
+				#particles[i].collision(particles[j])
 
-		pygame.draw.circle(screen, (255, 255, 255), (int(x), int(y)) ,int(radius), 1)
+		#pygame.draw.circle(screen, (255, 255, 255), (int(x), int(y)) ,int(radius), 1)
+
+		player.player = True
+		player.display()
+		player.move(0, 0)
 
 		pygame.display.flip()
 
