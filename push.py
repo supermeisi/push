@@ -87,7 +87,7 @@ def main():
 
 						if particles[i].radius > 0.1:
 							#Shrink particle size after pushing
-							particles[i].radius -= 0.1
+							particles[i].radius -= 0.1*particles[i].radius
 							#Create new particle after pushing
 							newpart = Particle(screen, (int(particles[i].x+particles[i].radius), int(particles[i].y+particles[i].radius)), int(particles[i].radius*0.2), int((pos[0] - particles[i].x)*0.1), int((pos[1] - particles[i].y)*0.1))
 							particles.append(newpart)
