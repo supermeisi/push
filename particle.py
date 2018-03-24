@@ -21,20 +21,6 @@ class Particle:
 			pygame.draw.circle(self.screen, self.colour, (int(self.x), int(self.y)), int(self.radius), self.thickness)
 
 	def move(self, vx, vy):
-		if(self.player == True):
-			for event in pygame.event.get():
-				if(event.type == pygame.MOUSEBUTTONUP):
-					pos = pygame.mouse.get_pos()
-					dist = math.sqrt((pos[0] - self.x)**2 + (pos[1] - self.y)**2)
-
-					print pos[0] - self.x, pos[1] - self.y
-
-					self.vx -= (0.25*(pos[0]-self.x)/dist)
-					self.vy -= (0.25*(pos[1]-self.y)/dist)
-
-					if self.radius > 0.1:
-						self.radius -= 0.1
-
 		self.vx += vx
 		self.vy += vy
 

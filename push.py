@@ -1,6 +1,8 @@
 import pygame
 import math
 import random
+import time
+
 from particle import Particle
 
 def main():
@@ -52,6 +54,13 @@ def main():
 	pygame.font.init()
 	myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
+	textsurface = myfont.render("Become the largest", False, (255, 55, 0))
+	screen.blit(textsurface,(width/2,height/2))
+
+	pygame.display.flip()
+
+	time.sleep(3)
+
 	#Starting main loop
 	while running:
 		clock.tick(30)
@@ -64,6 +73,24 @@ def main():
 			particles[i].move(0, 0)
 
 			particles[i].comparison(player)
+
+			if(particles[i].player == True):
+				for event in pygame.event.get():
+					if(event.type == pygame.MOUSEBUTTONUP):
+						pos = pygame.mouse.get_pos()
+						dist = math.sqrt((pos[0] - particles[i].x)**2 + (pos[1] - particles[i].y)**2)
+
+						print pos[0] - particles[i].x, pos[1] - particles[i].y
+
+						particles[i].vx -= (0.25*(pos[0]-particles[i].x)/dist)
+						particles[i].vy -= (0.25*(pos[1]-particles[i].y)/dist)
+
+						if particles[i].radius > 0.1:
+							#Shrink particle size after pushing
+							particles[i].radius -= 0.1
+							#Create new particle after pushing
+							newpart = Particle(screen, (int(particles[i].x+particles[i].radius), int(particles[i].y+particles[i].radius)), int(particles[i].radius*0.2), int((pos[0] - particles[i].x)*0.1), int((pos[1] - particles[i].y)*0.1))
+							particles.append(newpart)
 
 			for j in range(len(particles)):
 				particles[i].collision(particles[j])
