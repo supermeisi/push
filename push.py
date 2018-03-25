@@ -46,7 +46,7 @@ def main():
 		randvx = -2+random.random()*4
 		randvy = -2+random.random()*4
 
-		randrad = 22*random.random()+2
+		randrad = 25*random.random()+2
 
 		print randvx, randvy
 
@@ -134,6 +134,7 @@ def main():
 
 		print player.radius, min
 
+		#Loosing game if smaller than all other particles
 		if(player.radius < min):
 			lost = True
 			print "You lost the game"
@@ -144,6 +145,8 @@ def main():
 		if(lost == True):
 			textsurface = myfont.render("You lost the game", False, (255, 55, 0))
 			screen.blit(textsurface,(width/2,height/2))
+
+		pygame.transform.rotozoom(screen, 0, -5)
 
 		pygame.display.flip()
 
