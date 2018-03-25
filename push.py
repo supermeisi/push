@@ -41,7 +41,7 @@ def main():
 		randvx = -2+random.random()*4
 		randvy = -2+random.random()*4
 
-		randrad = 25*random.random()+1
+		randrad = 22*random.random()+2
 
 		print randvx, randvy
 
@@ -68,6 +68,9 @@ def main():
 
 		index = []
 
+		max = 0
+		min = 50
+
 		for i in range(len(particles)):
 			particles[i].display()
 			particles[i].move(0, 0)
@@ -85,13 +88,33 @@ def main():
 						particles[i].vx -= (0.25*(pos[0]-particles[i].x)/dist)
 						particles[i].vy -= (0.25*(pos[1]-particles[i].y)/dist)
 
+						#Check if player particle is not too small
 						if particles[i].radius > 0.1:
 							#Shrink particle size after pushing
 							particles[i].radius -= 0.1*particles[i].radius
 							#Create new particle after pushing
 							newpart = Particle(screen, (int(particles[i].x+1.3*particles[i].radius*(pos[0]-particles[i].x)/dist), int(particles[i].y+1.3*particles[i].radius*(pos[1]-particles[i].y)/dist)), int(particles[i].radius*0.2), int((pos[0] - particles[i].x)*0.1), int((pos[1] - particles[i].y)*0.1))
 							particles.append(newpart)
+			else:
+				if(particles[i].radius < min):
+					min = particles[i].radius
 
+			key = pygame.key.get_pressed()
+
+			if(key[pygame.K_UP]):
+				particles[i].shift(0,10)
+				print "Shifting up"
+			if(key[pygame.K_DOWN]):
+				particles[i].shift(0,-10)
+				print "Shifting up"
+			if(key[pygame.K_LEFT]):
+				particles[i].shift(10,0)
+				print "Shifting left"
+			if(key[pygame.K_RIGHT]):
+				particles[i].shift(-10,0)
+				print "Shifting right"
+
+			#Check and calculate collisions between particles
 			for j in range(len(particles)):
 				particles[i].collision(particles[j])
 
@@ -103,6 +126,12 @@ def main():
 
 		for i in range(len(index)):
 			particles.pop(index[i])
+
+		print player.radius, min
+
+		if(player.radius < min):
+			lost = True
+			print "You lost the game"
 
 		player.display()
 		player.move(0, 0)

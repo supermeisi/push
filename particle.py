@@ -56,3 +56,7 @@ class Particle:
 			self.colour = (255, 0, 0)
 		if(self.radius < particle.radius):
 			self.colour = (0, 255, 0)
+
+	def shift(self, dx, dy):
+		self.x += dx
+		self.y += dy
