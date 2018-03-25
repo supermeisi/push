@@ -9,6 +9,9 @@ def main():
 	width = 800
 	height = 600
 
+	world_width = 4000
+	world_height = 3000
+
 	pygame.init()
 	screen = pygame.display.set_mode((width, height))
 	running = True
@@ -33,10 +36,12 @@ def main():
 
 	lost = False
 
+	random.seed(2)
+
 	#Creating initial particles randomly
-	for i in range(25):
-		randx = random.random()*800
-		randy = random.random()*640
+	for i in range(100):
+		randx = random.random()*world_width
+		randy = random.random()*world_height
 
 		randvx = -2+random.random()*4
 		randvy = -2+random.random()*4
@@ -73,7 +78,7 @@ def main():
 
 		for i in range(len(particles)):
 			particles[i].display()
-			particles[i].move(0, 0)
+			particles[i].move(world_width, world_height, 0, 0)
 
 			particles[i].comparison(player)
 
@@ -134,7 +139,7 @@ def main():
 			print "You lost the game"
 
 		player.display()
-		player.move(0, 0)
+		player.move(world_width, world_height, 0, 0)
 
 		if(lost == True):
 			textsurface = myfont.render("You lost the game", False, (255, 55, 0))

@@ -20,14 +20,14 @@ class Particle:
 		if(self.radius > self.thickness):
 			pygame.draw.circle(self.screen, self.colour, (int(self.x), int(self.y)), int(self.radius), self.thickness)
 
-	def move(self, vx, vy):
+	def move(self, world_width, world_height, vx, vy):
 		self.vx += vx
 		self.vy += vy
 
-		if(self.x < 0 or self.x > 800):
+		if(self.x < 0 or self.x > world_width):
 			self.vx = -self.vx
 
-		if(self.y < 0 or self.y > 600):
+		if(self.y < 0 or self.y > world_height):
 			self.vy = -self.vy
 
 		self.x += self.vx
