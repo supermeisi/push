@@ -60,3 +60,6 @@ class Particle:
 	def shift(self, dx, dy):
 		self.x += dx
 		self.y += dy
+
+	def shrink(self, dr):
+		self.radius += dr

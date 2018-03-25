@@ -39,7 +39,7 @@ def main():
 	random.seed(2)
 
 	#Creating initial particles randomly
-	for i in range(100):
+	for i in range(150):
 		randx = random.random()*world_width
 		randy = random.random()*world_height
 
@@ -118,6 +118,15 @@ def main():
 			if(key[pygame.K_RIGHT]):
 				particles[i].shift(-10,0)
 				print "Shifting right"
+
+			if(key[pygame.K_PAGEUP]):
+				particles[i].shift(math.sqrt(2),math.sqrt(2))
+				particles[i].shrink(1)
+				print "Zooming in"
+			if(key[pygame.K_PAGEDOWN]):
+				particles[i].shift(-math.sqrt(2),-math.sqrt(2))
+				particles[i].shrink(-1)
+				print "Zooming out"
 
 			#Check and calculate collisions between particles
 			for j in range(len(particles)):
